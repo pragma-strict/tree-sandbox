@@ -6,6 +6,10 @@ class Display{
    constructor(){
       this.parentID;
       this.canvas;
+      this.rootNode = new BinaryNode(5);
+      this.rootPos;
+      this.rootSize =25;
+      this.rootNode.setLeft(new BinaryNode(5));
    }
 
    createCanvas(parentID){
@@ -13,19 +17,17 @@ class Display{
       let parentStyle = window.getComputedStyle(document.getElementById(this.parentID));
       this.canvas = createCanvas(parseInt(parentStyle.width), parseInt(parentStyle.height));
       this.canvas.parent(this.parentID);
-      this.render();
+      this.rootPos = new p5.Vector(width/2, height/8);
    }
 
    updateCanvasSize(){
       let parentStyle = window.getComputedStyle(document.getElementById(ID_PARENT));
       resizeCanvas(parseInt(parentStyle.width), parseInt(parentStyle.height));
-      this.render();
+      this.rootPos = new p5.Vector(width/2, height/8);
    }
 
    render(){
       background(BG_COL);
-      fill(0);
-      stroke(BG_COL);
-      strokeWeight(2);
+      this.rootNode.renderRecursive(this.rootPos, this.rootSize)
    }
 }
