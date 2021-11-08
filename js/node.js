@@ -1,9 +1,7 @@
 
-
-
 class BinaryNode{
-   constructor(value){
-      this.value = value;
+   constructor(){
+      this.value;
       this.left = null;
       this.right = null;
       this.isLeaf = true;
@@ -29,12 +27,15 @@ class BinaryNode{
       this.isLeaf = false;
    }
 
-   render(x, y, size){
-      fill(0);
+   render(pos, size, color){
+      fill(color);
       noStroke();
-      ellipse(x, y, size);
-      fill(255)
-      text(this.value, x, y)
+      ellipse(pos.x, pos.y, size);
+      if(this.value){
+         fill(255);
+         textAlign(CENTER, CENTER);
+         text(this.value, pos.x, pos.y)
+      }
    }
 
    renderRecursive(pos, size){
@@ -53,12 +54,7 @@ class BinaryNode{
       }
       
       // Render this node
-      fill(0);
-      noStroke();
-      ellipse(pos.x, pos.y, size);
-      fill(255);
-      textAlign(CENTER, CENTER);
-      text(this.value, pos.x, pos.y)
+      this.render(pos, size, 0)
 
       // Render left and right children
       if(this.left){
