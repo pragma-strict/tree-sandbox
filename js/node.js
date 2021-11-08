@@ -21,6 +21,20 @@ class BinaryNode{
       this.isLeaf = false;
    }
 
+   hasLeft(){
+      if(this.left){
+         return true;
+      }
+      return false;
+   }
+
+   hasRight(){
+      if(this.right){
+         return true;
+      }
+      return false;
+   }
+
    setChildren(left, right){
       this.left = left;
       this.right = right;

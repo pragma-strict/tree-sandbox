@@ -8,6 +8,8 @@ class Display{
       this.canvas;
       this.binaryTree = new BinaryTree();
       this.binaryTree.setNodeSize(15);
+      this.binaryTree.addNode(6);
+      this.binaryTree.addNode(4);
    }
 
    createCanvas(parentID){
