@@ -5,16 +5,11 @@ let p5Display;
 
 
 function setup() {
-  p5Display = new Display();
-  p5Display.createCanvas(ID_PARENT);
+  p5Display = new Display(ID_PARENT);
+  noLoop();
 }
 
 
 function windowResized() {
   p5Display.updateCanvasSize();
-}
-
-
-function draw(){
-  p5Display.render();
 }

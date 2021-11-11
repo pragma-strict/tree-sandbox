@@ -1,10 +1,28 @@
 
 class BinaryNode{
-   constructor(){
-      this.value;
+   constructor(value){
+      this.value = value;
       this.left = null;
       this.right = null;
-      this.isLeaf = true;
+   }
+
+   insert(node){
+      if(node.value <= this.value){
+         if(this.left){
+            this.left.insert(node);
+         }
+         else{
+            this.left = node;
+         }
+      }
+      else{
+         if(this.right){
+            this.right.insert(node);
+         }
+         else{
+            this.right = node;
+         }
+      }
    }
 
    setValue(value){
@@ -13,12 +31,10 @@ class BinaryNode{
 
    setLeft(left){
       this.left = left;
-      this.isLeaf = false;
    }
 
    setRight(right){
       this.right = right;
-      this.isLeaf = false;
    }
 
    hasLeft(){
@@ -35,10 +51,13 @@ class BinaryNode{
       return false;
    }
 
+   isLeaf(){
+      return this.hasRight() || this.hasLeft();
+   }
+
    setChildren(left, right){
       this.left = left;
       this.right = right;
-      this.isLeaf = false;
    }
 
    render(pos, size, color){
@@ -52,7 +71,7 @@ class BinaryNode{
       }
    }
 
-   renderRecursive(pos, size){
+   renderRecursive(pos, size, selectedNode){
       // Render lines to left and right children first
       let leftPos = new p5.Vector(pos.x - size, pos.y + size);
       let rightPos = new p5.Vector(pos.x + size, pos.y + size);
@@ -68,14 +87,18 @@ class BinaryNode{
       }
       
       // Render this node
-      this.render(pos, size, 0)
+      let color = 0;
+      if(selectedNode === this){
+         color = RED;
+      }
+      this.render(pos, size, color)
 
       // Render left and right children
       if(this.left){
-         this.left.renderRecursive(leftPos, size);
+         this.left.renderRecursive(leftPos, size, selectedNode);
       }
       if(this.right){
-         this.right.renderRecursive(rightPos, size);
+         this.right.renderRecursive(rightPos, size, selectedNode);
       }
    }
 }

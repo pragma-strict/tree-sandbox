@@ -2,66 +2,132 @@
 class BinaryTree{
    constructor(){
       this.rootNode;
-      this.selectedNode = this.rootNode;
       this.rootPos;
-      this.selectedNodePos = this.rootPos;
+      this.selectedNode;
       this.nodeSize;
       this.traversalStack = [];
    }
 
 
    addNode(value){
-      let newNode = new BinaryNode();
-      newNode.setValue(value);
+      let newNode = new BinaryNode(value);
       if(!this.rootNode){
          this.rootNode = newNode;
-         this.selectedNode = this.rootNode;
       }
       else{
-         let lastNode = this.findLastNode();
-         console.log("Last node: " + lastNode);
+         this.rootNode.insert(newNode);
       }
+      this.selectedNode = newNode;
+      this.render();
    }
 
 
-   // Returns the last node in an inorder traversal beginning with the root
-   findLastNode(){
-      console.log("Finding last node...");
-      this.traversalStack.push(this.rootNode);
-      let nextNode = this.nextNode();
-      while(nextNode){
-         nextNode = this.nextNode();
-         console.log("Next node: " + nextNode);
+   // Recursively return an array containing each node in a pre-order traversal.
+   getPreorderTraversal(node, traversal){
+      traversal.push(node);
+      if(node.hasLeft()){
+         traversal.concat(this.getPreorderTraversal(node.left, traversal));
       }
-      let lastNodeOnStack = this.traversalStack[this.traversalStack.length -1];
-      console.log("Last node on stack: " + lastNodeOnStack);
-      return lastNodeOnStack;
+      if(node.hasRight()){
+         traversal.concat(this.getPreorderTraversal(node.right, traversal));
+      }
+      return traversal;
    }
 
 
-   // Returns the next node in an inorder traversal or 0 if none found. Updates the traversal stack.
-   nextNode(){
-      let currentNode = this.traversalStack[this.traversalStack.length -1];
-      let nextNode;
-      if(currentNode.hasLeft()){
-         nextNode = currentNode.left;
+   // Recursively return an array containing each node in an in-order traversal.
+   getInorderTraversal(node, traversal){
+      if(node.hasLeft()){
+         traversal.concat(this.getPreorderTraversal(node.left, traversal));
       }
-      if(currentNode.hasRight()){
-         nextNode = currentNode.right;
+      traversal.push(node);
+      if(node.hasRight()){
+         traversal.concat(this.getPreorderTraversal(node.right, traversal));
       }
-      if(nextNode === currentNode){
-         return 0;
+      return traversal;
+   }
+
+
+   // Recursively return an array containing each node in a post-order traversal.
+   getPostorderTraversal(node, traversal){
+      if(node.hasLeft()){
+         traversal.concat(this.getPreorderTraversal(node.left, traversal));
       }
-      this.traversalStack.push(nextNode);
-      return nextNode;
+      if(node.hasRight()){
+         traversal.concat(this.getPreorderTraversal(node.right, traversal));
+      }
+      traversal.push(node);
+      return traversal;
+   }
+
+
+   // Return an array containing each node in a level-order traversal.
+   getLevelOrderTraversal(node){
+      let currentLevel = [node];
+      let nextLevel = [];
+      let traversal = currentLevel;
+      let currentDepth = 1;
+      let isLastLevel;
+
+      while(!isLastLevel){
+         isLastLevel = true;
+
+         // Go through all the nodes in this level and add their children to the next level
+         for(let i = 0; i < currentLevel.length; i++){
+            let left = currentLevel[i].left;
+            let right = currentLevel[i].right;
+            if(left){
+               nextLevel.push(left);
+               isLastLevel = false;
+            }
+            if(right){
+               nextLevel.push(right);
+               isLastLevel = false;
+            }
+         }
+
+         currentLevel = [...nextLevel];
+         traversal.push(...currentLevel);
+         nextLevel = [];
+         currentDepth++;
+      }
+      return traversal;
+   }
+
+
+   getTreeHeight(){
+      let currentLevel = [this.rootNode];
+      let nextLevel = [];
+      let currentDepth = 0;
+      let isLastLevel;
+
+      while(!isLastLevel){
+         isLastLevel = true;
+
+         // Go through all the nodes in this level and add their children to the next level
+         for(let i = 0; i < currentLevel.length; i++){
+            let left = currentLevel[i].left;
+            let right = currentLevel[i].right;
+            if(left){
+               nextLevel.push(left);
+               isLastLevel = false;
+            }
+            if(right){
+               nextLevel.push(right);
+               isLastLevel = false;
+            }
+         }
+
+         currentLevel = [...nextLevel];
+         nextLevel = [];
+         currentDepth++;
+      }
+      return currentDepth;
    }
 
 
    setRootPosition(rootPos){
       this.rootPos = rootPos;
-      if(this.selectedNode === this.rootNode){
-         this.selectedNodePos = rootPos;
-      }
    }
 
    setNodeSize(nodeSize){
@@ -70,8 +136,7 @@ class BinaryTree{
 
    render(){
       if(this.rootNode){
-         this.rootNode.renderRecursive(this.rootPos, this.nodeSize);
-         this.selectedNode.render(this.selectedNodePos, this.nodeSize, RED);
+         this.rootNode.renderRecursive(this.rootPos, this.nodeSize, this.selectedNode);
       }
    }
 }
