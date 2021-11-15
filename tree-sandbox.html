@@ -7,7 +7,16 @@
   <body>
     <div class="grid-container">
       <div id="p5-canvas-container"></div>
-      <div id="p5-interface"></div>
+      <div id="p5-interface">
+        <br>
+        <div id="interface-data-wrapper">
+          <label for="data">Input array: </label>
+          <input type="text" id="interface-data" name="data" oninput="getInput()">
+        </div>
+        <p>Unsorted: <span id="interface-out-unsorted"></span></p>
+        <p>Sorted: <span id="interface-out-sorted"></span></p>
+        <p><b>Press ENTER to iterate heapsort on your input</b></p>
+      </div>
     </div>
     
     <!-- Include all our scripts -->
