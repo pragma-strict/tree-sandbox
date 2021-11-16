@@ -29,7 +29,7 @@ class Display{
 
    render(){
       background(BG_COL);
-      let rootNodePos = new p5.Vector(width/2, height/8);
+      let rootNodePos = new p5.Vector(width/2, height/4);
       this.heap.renderRecursive(0, 0, rootNodePos);
    }
 }

@@ -69,7 +69,8 @@ function keyPressed(){
       if(iterations != input_raw.length){
         INTERFACE_OUT_SORTED.innerHTML += ", ";
       }
-      INTERFACE_OUT_SORTED.innerHTML += p5Display.heap.removeMin();
+      input_sorted.push(p5Display.heap.removeMin());
+      INTERFACE_OUT_SORTED.innerHTML += input_sorted[input_sorted.length -1];
     }
     else{
       iterations = -1;
@@ -79,6 +80,13 @@ function keyPressed(){
     }
     iterations++;
     p5Display.render();
+
+    // Draw the arrays to the screen
+    fill(0);
+    strokeWeight(1);
+    textAlign(LEFT, TOP);
+    text("input: " + input_raw.slice(0, iterations), 25, 25);
+    text("sorted: " + input_sorted, 25, 45);
   }
 }
 
